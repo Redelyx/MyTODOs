@@ -1,0 +1,58 @@
+<resources>
+    <string name="app_name">My TODOs</string>
+    <string name="app_info_title">Info</string>
+    <string name="app_todo_title">ToDo details</string>
+    <string name="action_info">Info</string>
+    <string name="filter">Filter</string>
+    <string name="search">Search</string>
+    <string name="export">Export as CSV</string>
+    <string name="info">Information</string>
+    <string name="subject">Mobile Application Development</string>
+    <string name="subject1">2019/2020 (#mobdev)</string>
+    <string name="student">Alice Cipriani mat.285579</string>
+    <string name="input_name">Name: </string>
+    <string name="input_note">Note: </string>
+    <string name="input_category">Category: </string>
+    <string name="input_duedate">Due date: </string>
+    <string name="action_ok">Ok</string>
+    <string name="action_yes">Yes</string>
+    <string name="action_cancel">Cancel</string>
+    <string name="action_save">Save!</string>
+    <string name="delete">Delete</string>
+    <string name="edit">Edit</string>
+    <string name="search_hint">Search a todo</string>
+    <string name="action_duedate">Select due date</string>
+    <string name="duedate_result">-</string>
+    <string name="remove_element_message">Are you sure?</string>
+    <string name="filter_category">Category</string>
+    <string name="filter_date">Creation date</string>
+    <string name="filter_duedate">Due date</string>
+    <string name="filter_by">Filter by:</string>
+    <string name="action_from">Select from</string>
+    <string name="input_from">From:</string>
+    <string name="from_result">-</string>
+    <string name="action_to">Select to</string>
+    <string name="input_to">To:</string>
+    <string name="to_result">-</string>
+    <string name="unchanged">(unchanged)</string>
+
+    <string-array name="category">
+        <item>Work</item>
+        <item>Home</item>
+        <item>Study</item>
+        <item>Workout</item>
+        <item>ToBuy</item>
+        <item>Hobby</item>
+    </string-array>
+
+    <string-array name="edit_category">
+        <item>-</item>
+        <item>Work</item>
+        <item>Home</item>
+        <item>Study</item>
+        <item>Workout</item>
+        <item>ToBuy</item>
+        <item>Hobby</item>
+    </string-array>
+
+</resources>
