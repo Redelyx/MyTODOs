@@ -49,6 +49,7 @@
         android:background="@drawable/circle"
         android:padding="20dp"
         android:scaleType="center"
-        android:src="@drawable/ic_launcher_foreground"/>
+        android:src="@drawable/ic_launcher_foreground"
+        android:contentDescription="@string/todo" />
 
 </LinearLayout>

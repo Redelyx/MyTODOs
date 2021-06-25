@@ -45,6 +45,7 @@
                 android:value="com.example.androidmobdev.MainActivity" />
         </activity>
 
+        <receiver android:name=".ReminderBroadcast"/>
 
     </application>
 

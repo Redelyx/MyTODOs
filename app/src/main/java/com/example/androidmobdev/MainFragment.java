@@ -22,7 +22,8 @@ import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.text.DateFormat;
+import com.google.android.material.snackbar.Snackbar;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -42,18 +43,18 @@ public class MainFragment extends Fragment {
     private Context mContext = null;
     private ToDoManager toDoManager = null;
 
-    private int type;
+    private int mType;
 
     public MainFragment(int i){
-        this.type = i;
-    } //da togliere se non serve piu
+        this.mType = i;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Log.d(TAG, "onCreateView called!");
         final View rootView = inflater.inflate(R.layout.list_fragment, container, false);
 
-        this.mContext = getContext();
+        this.mContext = getActivity();
         this.toDoManager = ToDoManager.getInstance(mContext);
 
         init(rootView);
@@ -66,7 +67,7 @@ public class MainFragment extends Fragment {
         //recupero la recycler view tramite id
         mRecyclerView  = (RecyclerView)rootView.findViewById(R.id.my_recycler_view);                        //devo recuperare i componenti dalla vista e non dall'activity
 
-        mLayoutManager  = new LinearLayoutManager(getActivity());                                           // use a linear layout manager
+        mLayoutManager  = new LinearLayoutManager(mContext);                                           // use a linear layout manager
         mLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);                                        //orientamento verticale
         mLayoutManager.scrollToPosition(0);                                                                 //parte dalla posizione 0
 
@@ -76,16 +77,14 @@ public class MainFragment extends Fragment {
         // in content do not change the layout size of the RecyclerView
         mRecyclerView.setHasFixedSize(true);
 
-        // specify an adapter (see also next example)
-        switch(this.type){
-            case 0:
-                mAdapter = new MyAdapter(ToDoManager.getInstance(getActivity()).getToDoList(), getActivity(), 0);break;
+        // specify an adapter
+        switch(this.mType){
             case 1:
-                mAdapter = new MyAdapter(ToDoManager.getInstance(getActivity()).getYetToDoList(), getActivity(), 1);break;
+                mAdapter = new MyAdapter(ToDoManager.getInstance(mContext).getYetToDoList(), mContext);break;
             case 2:
-                mAdapter = new MyAdapter(ToDoManager.getInstance(getActivity()).getDoneList(), getActivity(), 2);break;
+                mAdapter = new MyAdapter(ToDoManager.getInstance(mContext).getDoneList(), mContext);break;
             default:
-                mAdapter = new MyAdapter(ToDoManager.getInstance(getActivity()).getToDoList(), getActivity(), 0);break;
+                mAdapter = new MyAdapter(ToDoManager.getInstance(mContext).getToDoList(), mContext);break;
         }
 
         mRecyclerView.setAdapter(mAdapter); //setto l'adapter sulla recyclerview
@@ -96,15 +95,13 @@ public class MainFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Log.d(TAG,"Add Button Clicked !");
-                dialog();
+                addToDoDialog();
             }
         });
     }
 
     private void observeLogData(){
-        switch(this.type){
-            case 0:
-                mLiveDataList = this.toDoManager.getToDoListLiveData();break;
+        switch(this.mType){
             case 1:
                 mLiveDataList = this.toDoManager.getYetToDoListLiveData();break;
             case 2:
@@ -133,8 +130,8 @@ public class MainFragment extends Fragment {
             mLayoutManager.scrollToPosition(scrollPosition);
     }
 
-    private void dialog(){
-        AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity());
+    private void addToDoDialog(){
+        AlertDialog.Builder dialog = new AlertDialog.Builder(mContext);
         View v = getLayoutInflater().inflate(R.layout.add_todo, null);
 
         final ToDo todo = new ToDo();
@@ -155,7 +152,7 @@ public class MainFragment extends Fragment {
         duedateButton.setOnClickListener(new View.OnClickListener() {
              @Override
              public void onClick(View v) {
-                 AlertDialog.Builder datedialog = new AlertDialog.Builder(getActivity());
+                 AlertDialog.Builder datedialog = new AlertDialog.Builder(mContext);
                  View v1 = getLayoutInflater().inflate(R.layout.date_dialog, null);
 
                  final DatePicker duedateInput = (DatePicker) v1.findViewById(R.id.date_input);
@@ -190,6 +187,7 @@ public class MainFragment extends Fragment {
                          todo.setDuedate(dueDate);
                          textduedate.setText(strDueDate);
                          alertDialog1.dismiss();
+
                      }
                  });
                  alertDialog1.show();
@@ -208,13 +206,11 @@ public class MainFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Date date = Calendar.getInstance().getTime();
-                DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-                String strDate = dateFormat.format(date);
                 String name = nameInput.getText().toString();
                 String category = categoryInput.getSelectedItem().toString();
 
                 if(name.matches("")){
-                    Toast.makeText(getActivity(), "Give your ToDo a name!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mContext, "Give your ToDo a name!", Toast.LENGTH_SHORT).show();
                     alertDialog.dismiss();
                 }else{
                     todo.setName(name);
@@ -222,11 +218,15 @@ public class MainFragment extends Fragment {
                     todo.setDate(date);
                     todo.setNote(noteInput.getText().toString());
 
-                    ToDoManager.getInstance(getActivity()).addToDo(todo);
+                    ToDoManager.getInstance(mContext).addToDo(todo);
                     mAdapter.notifyDataSetChanged();
 
                     mLayoutManager.scrollToPosition(0);
-                    Toast.makeText(getActivity(), "New ToDo created!", Toast.LENGTH_SHORT).show();
+
+                    View rootView = getActivity().getWindow().getDecorView().findViewById(android.R.id.content);
+                    Snackbar.make(rootView, "New ToDo created!", Snackbar.LENGTH_SHORT).show();
+
+                    //Toast.makeText(mContext, "New ToDo created!", Toast.LENGTH_SHORT).show();
                     alertDialog.dismiss();
                 }
             }

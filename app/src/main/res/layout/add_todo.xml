@@ -4,11 +4,12 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="15dp">
+
     <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="horizontal">
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -19,16 +20,19 @@
             android:id="@+id/name_input"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Enter name"
+            android:hint="@string/enter_name"
             android:inputType="text"
-            android:paddingLeft="10dp"/>
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:autofillHints=""
+            android:paddingStart="10dp" />
     </LinearLayout>
 
     <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="horizontal">
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -40,14 +44,15 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:entries="@array/category"
-            android:paddingLeft="10dp"/>
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"/>
     </LinearLayout>
 
     <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="horizontal">
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -58,60 +63,69 @@
             android:id="@+id/note_input"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Enter note"
+            android:hint="@string/enter_note"
             android:inputType="text"
-            android:paddingLeft="10dp"/>
+            android:paddingLeft="10dp"
+            android:paddingStart="10dp"
+            android:paddingRight="10dp"
+            android:autofillHints="" />
     </LinearLayout>
 
-    <Button
-        android:id="@+id/due_date_input"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/action_duedate"
-        android:textSize="18sp"
-        android:layout_gravity="center_horizontal"
-        android:layout_weight="1"/>
     <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="horizontal">
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/input_duedate"
             android:textSize="22sp" />
+
         <TextView
             android:id="@+id/duedate_res"
-            android:layout_width="wrap_content"
+            android:layout_width="267dp"
             android:layout_height="wrap_content"
+            android:paddingStart="10dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
             android:text="@string/duedate_result"
-            android:textSize="22sp"
-            android:paddingLeft="10dp"/>
+            android:textSize="22sp" />
+
     </LinearLayout>
 
-    <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="horizontal"
-        android:padding="15dp"
-        android:layout_marginTop="20dp">
+    <Button
+        android:id="@+id/due_date_input"
+        android:layout_width="248dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="@string/action_duedate"
+        android:textSize="18sp" />
 
-    <Button
-        android:id="@+id/dialog_cancel"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/action_cancel"
-        android:textSize="18sp"
-        android:layout_weight="1"/>
-    <Button
-        android:id="@+id/dialog_ok"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/action_ok"
-        android:textSize="18sp"
-        android:layout_weight="1"/>
+        android:layout_marginTop="20dp"
+        android:orientation="horizontal"
+        android:padding="15dp">
+
+        <Button
+            android:id="@+id/dialog_cancel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/action_cancel"
+            android:textSize="18sp"
+            style="?android:attr/buttonBarButtonStyle"/>
+
+        <Button
+            android:id="@+id/dialog_ok"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/action_ok"
+            android:textSize="18sp"
+            style="?android:attr/buttonBarButtonStyle"/>
 
     </LinearLayout>
 

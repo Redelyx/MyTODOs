@@ -35,6 +35,13 @@
     <string name="input_to">To:</string>
     <string name="to_result">-</string>
     <string name="unchanged">(unchanged)</string>
+    <string name="enter_note">Enter note</string>
+    <string name="enter_name">Enter name</string>
+    <string name="todo">TODO</string>
+    <string name="new_button">New Button</string>
+    <string name="check_alarm">Check Alarms</string>
+    <string name="channel_name">TODORemainderChannel</string>
+    <string name="channel_description">A channel for MyTODOs app notifications</string>
 
     <string-array name="category">
         <item>Work</item>

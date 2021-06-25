@@ -5,33 +5,55 @@
     android:orientation="vertical"
     android:padding="15dp">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/input_from"
+            android:textSize="22sp" />
+
+        <TextView
+            android:id="@+id/from"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:text="@string/from_result"
+            android:textSize="22sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/input_to"
+            android:textSize="22sp" />
+
+        <TextView
+            android:id="@+id/to"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:text="@string/to_result"
+            android:textSize="22sp" />
+    </LinearLayout>
+
     <Button
         android:id="@+id/from_input"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/action_from"
         android:textSize="18sp"
-        android:layout_gravity="center_horizontal"
-        android:layout_weight="1"/>
-
-    <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="horizontal">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/input_from"
-            android:textSize="22sp" />
-        <TextView
-            android:id="@+id/from"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/from_result"
-            android:textSize="22sp"
-            android:paddingLeft="10dp"/>
-    </LinearLayout>
+        android:layout_gravity="center_horizontal" />
 
     <Button
         android:id="@+id/to_input"
@@ -39,50 +61,32 @@
         android:layout_height="wrap_content"
         android:text="@string/action_to"
         android:textSize="18sp"
-        android:layout_gravity="center_horizontal"
-        android:layout_weight="1"/>
-    <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="horizontal">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/input_to"
-            android:textSize="22sp" />
-        <TextView
-            android:id="@+id/to"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/to_result"
-            android:textSize="22sp"
-            android:paddingLeft="10dp"/>
-    </LinearLayout>
-
+        android:layout_gravity="center_horizontal"/>
 
     <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="383dp"
+        android:layout_height="527dp"
+        android:layout_marginTop="20dp"
         android:orientation="horizontal"
-        android:padding="15dp"
-        android:layout_marginTop="20dp">
+        android:padding="15dp">
 
         <Button
             android:id="@+id/dialog_cancel"
+            style="?android:attr/buttonBarButtonStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:text="@string/action_cancel"
-            android:textSize="18sp"
-            android:layout_weight="1"/>
+            android:textSize="18sp" />
+
         <Button
             android:id="@+id/dialog_ok"
+            style="?android:attr/buttonBarButtonStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:text="@string/action_ok"
-            android:textSize="18sp"
-            android:layout_weight="1"/>
+            android:textSize="18sp" />
 
     </LinearLayout>
 

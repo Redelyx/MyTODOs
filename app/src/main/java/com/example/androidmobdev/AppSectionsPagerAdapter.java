@@ -20,8 +20,6 @@ public class AppSectionsPagerAdapter extends FragmentPagerAdapter {
     @Override
     public Fragment getItem(int i) {
         switch (i) {
-            case 0:
-                return new MainFragment(0);
             case 1:
                 return new MainFragment(1);
             case 2:

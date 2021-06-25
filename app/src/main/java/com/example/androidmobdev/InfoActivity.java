@@ -1,13 +1,9 @@
 package com.example.androidmobdev;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
-import android.view.MenuItem;
 
-import androidx.activity.OnBackPressedCallback;
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
@@ -18,11 +14,11 @@ public class InfoActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.single_fragment_activity);                                          //imposto il layout
         Log.d(TAG,"onCreate() called !");
 
         if (savedInstanceState == null) {
-
             getSupportFragmentManager().beginTransaction().add(R.id.container, new InfoFragment()).commit();    //retrocompatibilità, transazioni si gestiscono tramite fragment manager, inserisco il mio fragment nella transaction, poi commit
             //r.id.container è l'id del frame layout in cui inserire il fragment
         }
@@ -33,15 +29,11 @@ public class InfoActivity extends AppCompatActivity {
 
     private void setupToolBar(){
         //ToolBar and ActionBar Settings
-        Toolbar toolbar = (Toolbar)findViewById(R.id.my_awesome_toolbar);
+        Toolbar toolbar = (Toolbar)findViewById(R.id.my_toolbar);
         setSupportActionBar(toolbar);
 
-        ActionBar actionBar = getSupportActionBar();
-
-        if(actionBar != null){
-            actionBar.setHomeButtonEnabled(true);
-            actionBar.setDisplayHomeAsUpEnabled(true);
-        }
+        getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     @Override

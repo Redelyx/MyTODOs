@@ -1,10 +1,8 @@
 package com.example.androidmobdev;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.net.Uri;
 import android.util.Log;
-import android.widget.Toast;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -13,7 +11,6 @@ import java.io.OutputStreamWriter;
 import java.util.Date;
 import java.util.List;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.lifecycle.LiveData;
 import androidx.room.Room;
 
@@ -107,7 +104,6 @@ public class ToDoManager {
         try {
 
             OutputStream outputStream = mContext.getContentResolver().openOutputStream(uri);
-           // String outputContent = getSerializedJsonContent();
 
             if(outputStream != null && todos.size() != 0){
                 BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(outputStream));
@@ -131,6 +127,8 @@ public class ToDoManager {
 
     public List<ToDo> searchToDo(String string) {return toDoDao.searchToDo(string);}
 
+    public ToDo searchToDoById(int id) {return toDoDao.searchToDoById(id);}
+
     public List<ToDo> searchToDoByCategory(String string) {return toDoDao.searchToDoByCategory(string);}
 
     public List<ToDo> searchToDoByDate(Date from, Date to) {return toDoDao.searchToDoByDate(from, to);}
@@ -142,6 +140,7 @@ public class ToDoManager {
     public List<ToDo> getYetToDoList(){ return this.toDoDao.getYetToDo();}
 
     public List<ToDo> getDoneList(){ return this.toDoDao.getDone();}
+
 
     public LiveData<List<ToDo>> getQueryListLiveData(String string){ return this.toDoDao.getQueryListLiveData(string);}
 

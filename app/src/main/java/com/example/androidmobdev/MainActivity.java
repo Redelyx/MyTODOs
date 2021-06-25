@@ -1,18 +1,23 @@
 package com.example.androidmobdev;
 import androidx.activity.OnBackPressedCallback;
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.widget.Toolbar;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 
 import android.app.Activity;
+import android.app.AlarmManager;
 import android.app.AlertDialog;
-import android.app.SearchManager;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 
+import android.os.SystemClock;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -26,18 +31,18 @@ import android.widget.Toast;
 
 import com.google.android.material.tabs.TabLayout;
 
+import java.util.Calendar;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     private Context mContext = null;
-    private MainFragment mainFragment = null;
     public static String TAG = "MainActivity";
     private AppSectionsPagerAdapter mAppSectionsPagerAdapter = null;
     private ViewPager mViewPager = null;
     private TabLayout tabLayout = null;
 
-    Long from = null;
-    Long to = null;
+    private Long from = null;
+    private Long to = null;
 
     public void setFrom(Long from) {
         this.from = from;
@@ -62,34 +67,63 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Log.d(TAG,"onCreate() called !");
 
+        this.mContext = this;
+
         setupToolBar();
         setupViewPager();
         setupTabLayout();
 
-        this.mContext = this;
+        createNotificationChannel();
 
-        // This callback will only be called when MyFragment is at least Started.
+        setAlarm();
+
         OnBackPressedCallback callback = new OnBackPressedCallback(true /* enabled by default */) {
             @Override
             public void handleOnBackPressed() {
                //do nothing to avoid inconsistency due to activities with old ToDo
-                Toast.makeText(mContext, "Nothing else to see!", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(mContext, "Nothing else to see!", Toast.LENGTH_SHORT).show();
+                finish();
             }
         };
         this.getOnBackPressedDispatcher().addCallback(this, callback);
     }
 
+    private void setAlarm() {
+        Intent intent = new Intent(MainActivity.this, ReminderBroadcast.class);
+        PendingIntent alarmIntent = PendingIntent.getBroadcast(mContext, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
+
+        AlarmManager alarmMgr = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(System.currentTimeMillis());
+
+        alarmMgr.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis() + 1000*10,
+                AlarmManager.INTERVAL_DAY, alarmIntent);
+    }
+
+    private void createNotificationChannel() {
+        //Because you must create the notification channel before posting any
+        //notifications on Android 8.0 and higher, you should execute this code as soon as
+        //your app starts. It's safe to call this repeatedly because creating an existing
+        //notification channel performs no operation
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+            CharSequence name = getString(R.string.channel_name);
+            String description = getString(R.string.channel_description);
+            NotificationChannel channel = new NotificationChannel("notifyTODO", name, NotificationManager.IMPORTANCE_HIGH);
+            channel.setDescription(description);
+
+            getSystemService((NotificationManager.class)).createNotificationChannel(channel);
+        }
+    }
+
     private void setupToolBar(){
         //ToolBar and ActionBar Settings
-        Toolbar toolbar = (Toolbar)findViewById(R.id.my_awesome_toolbar);
+        Toolbar toolbar = (Toolbar)findViewById(R.id.my_toolbar);
         setSupportActionBar(toolbar);
 
-        ActionBar actionBar = getSupportActionBar();
+        getSupportActionBar().setHomeButtonEnabled(false);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
 
-        if(actionBar != null){
-            actionBar.setHomeButtonEnabled(false);
-            actionBar.setDisplayHomeAsUpEnabled(false);
-        }
     }
 
     private void setupViewPager(){
@@ -100,31 +134,7 @@ public class MainActivity extends AppCompatActivity {
         // user swipes between sections.
         mViewPager  = (ViewPager)findViewById(R.id.container);
 
-        //Set the number of pages that should be retained to either side of the current page in the view hierarchy in an idle state.
-        //Pages beyond this limit will be recreated from the adapter when needed.
-        mViewPager.setOffscreenPageLimit(2);
-
         mViewPager.setAdapter(mAppSectionsPagerAdapter);
-        mViewPager.setPageTransformer(true, new ZoomOutPageTransformer());
-
-        mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-                Log.d(MainActivity.TAG, "Page scrolled: " + position + ", " + positionOffset + ", " + positionOffsetPixels);
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-                Log.d(MainActivity.TAG, "ViewPager Page Selected: " + position);
-                //update();
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-                Log.d(MainActivity.TAG, "State changed: " + state);
-            }
-
-        });
 
     }
 
@@ -160,8 +170,24 @@ public class MainActivity extends AppCompatActivity {
            case R.id.action_export:
                exportToDo();
                return true;
+           case R.id.check_alarm:
+               checkAlarm();
+               return true;
        }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void checkAlarm() {
+        Toast.makeText(mContext, "Alarms checked!",Toast.LENGTH_LONG).show();
+
+        Intent intent = new Intent(MainActivity.this, ReminderBroadcast.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(mContext, 0, intent, 0);
+
+        AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+
+        long timeAtButtonClick = System.currentTimeMillis();
+
+        alarmManager.set(AlarmManager.RTC_WAKEUP, timeAtButtonClick+1000, pendingIntent);
     }
 
     private void openInfoActivity(){
@@ -319,7 +345,7 @@ public class MainActivity extends AppCompatActivity {
                      public void onClick(View v) {
                          int month = dateInput.getMonth()+1;
                          final String strDate = dateInput.getYear() +  "-" + month + "-" + dateInput.getDayOfMonth() ;
-                         setFrom(Converters.dateToTimestamp(Converters.fromString(strDate)));
+                         setFrom(Utilities.dateToTimestamp(Utilities.fromString(strDate)));
                          fromResult.setText(strDate);
                          alertDialog1.dismiss();
                      }
@@ -358,7 +384,7 @@ public class MainActivity extends AppCompatActivity {
                     public void onClick(View v) {
                         int month = dateInput.getMonth()+1;
                         final String strDate = dateInput.getYear() +  "-" + month + "-" + dateInput.getDayOfMonth() ;
-                        setTo(Converters.dateToTimestamp(Converters.fromString(strDate)));
+                        setTo(Utilities.dateToTimestamp(Utilities.fromString(strDate)));
                         toResult.setText(strDate);
                         alertDialog1.dismiss();
                     }
@@ -436,7 +462,7 @@ public class MainActivity extends AppCompatActivity {
                     public void onClick(View v) {
                         int month = dateInput.getMonth()+1;
                         final String strDate = dateInput.getYear() +  "-" + month + "-" + dateInput.getDayOfMonth() ;
-                        setFrom(Converters.dateToTimestamp(Converters.fromString(strDate)));
+                        setFrom(Utilities.dateToTimestamp(Utilities.fromString(strDate)));
                         fromResult.setText(strDate);
                         alertDialog1.dismiss();
                     }
@@ -475,7 +501,7 @@ public class MainActivity extends AppCompatActivity {
                     public void onClick(View v) {
                         int month = dateInput.getMonth()+1;
                         final String strDate = dateInput.getYear() +  "-" + month + "-" + dateInput.getDayOfMonth() ;
-                        setTo(Converters.dateToTimestamp(Converters.fromString(strDate)));
+                        setTo(Utilities.dateToTimestamp(Utilities.fromString(strDate)));
                         toResult.setText(strDate);
                         alertDialog1.dismiss();
                     }
@@ -523,8 +549,6 @@ public class MainActivity extends AppCompatActivity {
                         int type = mViewPager.getCurrentItem();
                         List<ToDo> todos;
                         switch(type){
-                            case 0:
-                                todos = ToDoManager.getInstance(this).getToDoList(); break;
                             case 1:
                                 todos = ToDoManager.getInstance(this).getYetToDoList();break;
                             case 2:

@@ -7,9 +7,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.SearchView;
 import android.widget.Toast;
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
@@ -30,10 +28,6 @@ public class FilterActivity extends AppCompatActivity {
     private static final String DOCUMENT_APPLICATION_TYPE = "text/csv";
     private static final int EXTERNAL_FILE_CREATE_REQUEST_ID = 1818;
 
-    public List<ToDo> getTodos() {
-        return todos;
-    }
-
     public void setTodos(List<ToDo> todos) {
         this.todos = todos;
     }
@@ -42,17 +36,11 @@ public class FilterActivity extends AppCompatActivity {
         this.mType = mType;
     }
 
-    public void setFrom(Date from) {
-        this.from = from;
-    }
 
     public void setTo(Date to) {
         this.to = to;
     }
 
-    public void setCat(String cat) {
-        this.cat = cat;
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,15 +53,15 @@ public class FilterActivity extends AppCompatActivity {
 
         setupToolBar();
 
-        setCat(this.getIntent().getExtras().getString("cat"));
+        cat = this.getIntent().getExtras().getString("cat");
 
         Long longFrom = this.getIntent().getExtras().getLong("from",0);
-        setFrom(Converters.fromTimestamp(longFrom));
+        from = Utilities.fromTimestamp(longFrom);
 
         Long longTo = this.getIntent().getExtras().getLong("to",0);
-        setTo(Converters.fromTimestamp(longTo));
+        to = Utilities.fromTimestamp(longTo);
 
-        setmType(this.getIntent().getExtras().getInt("type",0));
+        mType = this.getIntent().getExtras().getInt("type",0);
 
 
         Log.d(TAG,"cat = " + this.cat);
@@ -98,15 +86,12 @@ public class FilterActivity extends AppCompatActivity {
 
     private void setupToolBar(){
         //ToolBar and ActionBar Settings
-        Toolbar toolbar = (Toolbar)findViewById(R.id.my_awesome_toolbar);
+        Toolbar toolbar = (Toolbar)findViewById(R.id.my_toolbar);
         setSupportActionBar(toolbar);
 
-        ActionBar actionBar = getSupportActionBar();
+        getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        if(actionBar != null){
-            actionBar.setHomeButtonEnabled(true);
-            actionBar.setDisplayHomeAsUpEnabled(true);
-        }
     }
 
     @Override

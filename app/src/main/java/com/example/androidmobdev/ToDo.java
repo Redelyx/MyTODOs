@@ -4,11 +4,7 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
-import androidx.room.TypeConverter;
 
-import android.widget.ImageView;
-
-import java.io.Serializable;
 import java.util.Date;
 @Entity(tableName= "todos")
 public class ToDo {
@@ -51,9 +47,6 @@ public class ToDo {
         return this.name;
     }
 
-    public void todoCompleted(){ this.status = true;}
-    public void todoNotCompleted(){ this.status = false;}
-
     public void setName(String name) {this.name = name;}
 
     public Date getDate() {return date;}
@@ -63,7 +56,7 @@ public class ToDo {
 
     public Date getDuedate() {return duedate;}
     public String getDuedateString() {
-        if(duedate==null){
+        if(duedate == null){
             return "-";
         }else{
             return duedate.toString();

@@ -1,14 +1,12 @@
 package com.example.androidmobdev;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.SearchView;
 import android.widget.Toast;
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
@@ -24,28 +22,21 @@ public class SearchActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.single_fragment_activity);                                          //imposto il layout
+        setContentView(R.layout.single_fragment_activity); //imposto il layout
         Log.d(TAG,"onCreate() called !");
 
         this.mContext = this;
 
         setupToolBar();
-
-        if (savedInstanceState == null) {
-        }
     }
 
     private void setupToolBar(){
         //ToolBar and ActionBar Settings
-        Toolbar toolbar = (Toolbar)findViewById(R.id.my_awesome_toolbar);
+        Toolbar toolbar = (Toolbar)findViewById(R.id.my_toolbar);
         setSupportActionBar(toolbar);
 
-        ActionBar actionBar = getSupportActionBar();
-
-        if(actionBar != null){
-            actionBar.setHomeButtonEnabled(true);
-            actionBar.setDisplayHomeAsUpEnabled(true);
-        }
+        getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     @Override
@@ -80,12 +71,13 @@ public class SearchActivity extends AppCompatActivity {
                         List<ToDo> result = ToDoManager.getInstance(mContext).searchToDo(query);
                         if (result.size()>0) {
                             SearchFragment searchFragment = new SearchFragment();
-                            searchFragment.setToDoList(ToDoManager.getInstance(mContext).searchToDo(query));
+                            searchFragment.setToDoList(result);
                             getSupportFragmentManager().beginTransaction().add(R.id.container, searchFragment).commit();
                         }
                         else {
                             // Search query not found in List View
-                            Toast.makeText(SearchActivity.this,"Not found",Toast.LENGTH_LONG).show();
+                            Utilities.showSnackBar(SearchActivity.this, "Not found!");
+                            //Toast.makeText(SearchActivity.this,"Not found",Toast.LENGTH_LONG).show();
                         }
                         return false;
                     }

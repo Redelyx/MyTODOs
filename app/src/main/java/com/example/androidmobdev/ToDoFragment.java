@@ -1,13 +1,11 @@
 package com.example.androidmobdev;
 
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
 public class ToDoFragment extends Fragment {
@@ -16,18 +14,18 @@ public class ToDoFragment extends Fragment {
 
     public ToDoFragment() {}
 
-    public ToDo getToDo() {return todo;}		                                                                  //getter
-    public void setToDo(ToDo todo) {this.todo = todo;}                                                            //setter
-
+    public void setToDo(ToDo todo) {this.todo = todo;}                                       //setter
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
         View rootView = inflater.inflate(R.layout.todo_fragment, container, false);
         TextView TextView = (TextView)rootView.findViewById(R.id.todoTextView);
-        ToDo todo = getToDo();
         if(todo == null){
             TextView.setText("Nothing to see here!");
+            getActivity().findViewById(R.id.delete).setEnabled(false);
+            getActivity().findViewById(R.id.edit).setEnabled(false);
         }else{
-            TextView.setText(String.valueOf(todo.toString()));
+
+            TextView.setText(todo.toString());
         }
         return rootView;
     }

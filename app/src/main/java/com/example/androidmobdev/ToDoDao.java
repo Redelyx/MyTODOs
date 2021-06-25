@@ -5,7 +5,6 @@ import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
-import androidx.lifecycle.LiveData;
 
 import java.util.Date;
 import java.util.List;
@@ -47,6 +46,9 @@ public interface ToDoDao {
     @Query("SELECT * FROM todos WHERE duedate BETWEEN :from AND :to")
     List<ToDo> searchToDoByDueDate(Date from, Date to);
 
+    @Query("SELECT * FROM todos WHERE id LIKE :id")
+    ToDo searchToDoById(int id);
+
     @Query("SELECT * " +
             "FROM todos WHERE name LIKE '%'||:s||'%' OR " +
             "date LIKE '%'||:s||'%' OR " +
@@ -64,5 +66,4 @@ public interface ToDoDao {
 
     @Delete
     void delete(ToDo todo);
-//query per ricercare da un riquadro di testo
 }
